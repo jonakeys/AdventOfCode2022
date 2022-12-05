@@ -14,7 +14,7 @@ class day5
 			int nRows = 8;
 			int nStacks = 9;
 			boolean TEST = false;
-			int PART = 2; // 1 or 2
+			int PART = 1; // 1 or 2
 
 			// Create number of stacks
 			for (int i = 0; i < nStacks; ++i) {
@@ -25,11 +25,9 @@ class day5
 			// Read characters (ex '[C]') from stacks and put in stack
 			for (int i = 0; i < nRows; ++i) {
 				String row = scanner.nextLine();
-				ArrayList<Character> arrlist = new ArrayList<Character>();
 				int stackNr = 0;
 				for (int j = 1; j < ((nStacks * 3) + (nStacks - 1)); j += 4) {
 					Character c = row.charAt(j);
-					arrlist.add(c);
 					if (c != ' ') {
 						stacks.get(stackNr).add(c);
 					}
@@ -53,35 +51,22 @@ class day5
 				instructions.add(intArr);
 			}
 
-			if (PART == 1) {
-				for (ArrayList<Integer> move : instructions) {
-					if (!move.isEmpty()) {
-						int amount = move.get(0);
-						int from = move.get(1) - 1;
-						int to = move.get(2) - 1;
+			for (ArrayList<Integer> move : instructions) {
+				if (!move.isEmpty()) {
+					int amount = move.get(0);
+					int from = move.get(1) - 1;
+					int to = move.get(2) - 1;
+					if (PART == 1) {
 						for (int i = 0; i < amount; ++i) {
 							stacks.get(to).add(0, stacks.get(from).get(0));
 							stacks.get(from).remove(0);
 						}
 					}
-				}
-			}
-			else {
-				for (ArrayList<Integer> move : instructions) {
-					if (!move.isEmpty()) {
-						int amount = move.get(0);
-						int from = move.get(1) - 1;
-						int to = move.get(2) - 1;
-						if (amount == 1) {
-							stacks.get(to).add(0, stacks.get(from).get(0));
-							stacks.get(from).remove(0);
-						}
-						else {
-							amount -= 1;
-							for (int i = amount; i >= 0; --i) {
-								stacks.get(to).add(0, stacks.get(from).get(i));
-								stacks.get(from).remove(i);
-							}
+					else {
+						amount -= 1;
+						for (int i = amount; i >= 0; --i) {
+							stacks.get(to).add(0, stacks.get(from).get(i));
+							stacks.get(from).remove(i);
 						}
 					}
 				}
