@@ -1,0 +1,24 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class day5
+{
+	public static void main(String[] args) {
+		File file = new File("test.txt");
+		try {
+			Scanner scanner = new Scanner(file);
+			ArrayList<ArrayList> stacks = new ArrayList<ArrayList>();
+			
+			for (int i = 0; i < 3; ++i) {
+				scanner.
+			}
+			
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Oops, file not found!");
+			e.printStackTrace();
+		}
+	}
+}
