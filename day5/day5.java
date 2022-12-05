@@ -14,7 +14,7 @@ class day5
 			int nRows = 8;
 			int nStacks = 9;
 			boolean TEST = false;
-			int PART = 1; // 1 or 2
+			int PART = 2; // 1 or 2
 
 			// Create number of stacks
 			for (int i = 0; i < nStacks; ++i) {
@@ -56,13 +56,14 @@ class day5
 					int amount = move.get(0);
 					int from = move.get(1) - 1;
 					int to = move.get(2) - 1;
-					if (PART == 1) {
+					switch (PART) {
+					case 1:
 						for (int i = 0; i < amount; ++i) {
 							stacks.get(to).add(0, stacks.get(from).get(0));
 							stacks.get(from).remove(0);
 						}
-					}
-					else {
+						break;
+					case 2:
 						amount -= 1;
 						for (int i = amount; i >= 0; --i) {
 							stacks.get(to).add(0, stacks.get(from).get(i));
