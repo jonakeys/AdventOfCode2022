@@ -6,14 +6,15 @@ import java.util.Scanner;
 class day5
 {
 	public static void main(String[] args) {
-		File file = new File("test.txt");
+		File file = new File("input.txt");
 		try {
 			Scanner scanner = new Scanner(file);
 			ArrayList<ArrayList<Character>> stacks = new ArrayList<ArrayList<Character>>();
 			ArrayList<ArrayList<Integer>> instructions = new ArrayList<ArrayList<Integer>>();
-			int nRows = 3;
-			int nStacks = 3;
+			int nRows = 8;
+			int nStacks = 9;
 			boolean TEST = false;
+			int PART = 2; // 1 or 2
 
 			// Create number of stacks
 			for (int i = 0; i < nStacks; ++i) {
@@ -26,7 +27,7 @@ class day5
 				String row = scanner.nextLine();
 				ArrayList<Character> arrlist = new ArrayList<Character>();
 				int stackNr = 0;
-				for (int j = 1; j < (nStacks * 3) + 1; j += 4) {
+				for (int j = 1; j < ((nStacks * 3) + (nStacks - 1)); j += 4) {
 					Character c = row.charAt(j);
 					arrlist.add(c);
 					if (c != ' ') {
@@ -37,7 +38,6 @@ class day5
 						stackNr = 0;
 				}
 			}
-
 			scanner.nextLine();
 
 			while (scanner.hasNext()) {
@@ -53,8 +53,46 @@ class day5
 				instructions.add(intArr);
 			}
 
-			
+			if (PART == 1) {
+				for (ArrayList<Integer> move : instructions) {
+					if (!move.isEmpty()) {
+						int amount = move.get(0);
+						int from = move.get(1) - 1;
+						int to = move.get(2) - 1;
+						for (int i = 0; i < amount; ++i) {
+							stacks.get(to).add(0, stacks.get(from).get(0));
+							stacks.get(from).remove(0);
+						}
+					}
+				}
+			}
+			else {
+				for (ArrayList<Integer> move : instructions) {
+					if (!move.isEmpty()) {
+						int amount = move.get(0);
+						int from = move.get(1) - 1;
+						int to = move.get(2) - 1;
+						if (amount == 1) {
+							stacks.get(to).add(0, stacks.get(from).get(0));
+							stacks.get(from).remove(0);
+						}
+						else {
+							amount -= 1;
+							for (int i = amount; i >= 0; --i) {
+								stacks.get(to).add(0, stacks.get(from).get(i));
+								stacks.get(from).remove(i);
+							}
+						}
+					}
+				}
+			}
 
+			for (int i = 0; i < nStacks; ++i) {
+				System.out.print(stacks.get(i).get(0));
+			}
+			System.out.println();
+			
+			// Test methods
 			if (TEST) {
 				// Test stacks
 				for (ArrayList<Character> charArr : stacks) {
