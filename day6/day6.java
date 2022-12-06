@@ -9,13 +9,15 @@ class day6
 		try {
 			Scanner scanner = new Scanner(file);
 			int afterChar = 0;
+			int nDistinctChars = 14;
 			String serie = "";
+ 
 			while (scanner.hasNextLine()) {
 				String input = scanner.nextLine();
-				for (int i = 0; i < input.length()-4; ++i) {
-					String res = input.substring(i, i+4);
-					afterChar = i+4;
-					if (res.chars().distinct().count() == 4) {
+				for (int i = 0; i < input.length() - nDistinctChars; ++i) {
+					String res = input.substring(i, i + nDistinctChars);
+					afterChar = i + nDistinctChars;
+					if (res.chars().distinct().count() == nDistinctChars) {
 						serie = res;
 						break;
 					}
