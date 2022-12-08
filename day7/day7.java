@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 class day7
@@ -52,7 +53,8 @@ class day7
 			}
 		}
 		scanner.close();
-		
+
+		// Part 1
 		ArrayList<Node> dirs = new ArrayList<Node>();
 		recurse(topDir, dirs);
 		int sumFileSizesMax = 0;
@@ -62,8 +64,27 @@ class day7
 				//System.out.println(d.getName() + ": " + d.getSize());
 			}
 		}
-		System.out.println("Filesize of dirs with max size '100000': " + sumFileSizesMax);
-	}
+		System.out.println("Filesize of dirs with max size '100000': "
+						   + sumFileSizesMax);
+
+		// Part 2
+		int totalDiskspace = 70000000;
+		int neededDiskspace = 30000000;
+		Collections.sort(dirs);
+		int usedSpace = dirs.get(0).getSize();
+		int freeSpace = totalDiskspace - usedSpace;
+		int remaining = neededDiskspace - freeSpace;
+		for (int i = 0; i < dirs.size(); ++i) {
+			if (dirs.get(i).getSize() > 0) {
+				if (dirs.get(i).getSize() < remaining) {
+					System.out.println("Needed dir to free enough space: "
+									   + dirs.get(i-1).getName() + " ("
+									   + dirs.get(i-1).getSize() + ")");
+					break;
+				}
+			}
+		}
+ 	}
 
 	public static void recurse(Node n, ArrayList<Node> list) {
 		if (n instanceof Directory) {
@@ -76,10 +97,20 @@ class day7
 
 }
 
-class Node {
+class Node implements Comparable<Node> {
 	String name;
 	Node parent;
 	ArrayList<Node> children;
+
+	public int compareTo(Node n) {
+		if (this.getSize() < n.getSize()) {
+			return 1;
+		}
+		else if (this.getSize() > n.getSize()) {
+			return -1;
+		}
+		return 0;
+	}
 	
 	public Node(String name, Node parent, ArrayList<Node> children) {
 		this.name = name;
