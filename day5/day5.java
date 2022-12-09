@@ -40,8 +40,10 @@ class day5
 
 			while (scanner.hasNext()) {
 				String instruction = scanner.nextLine();
-				String sInstruction = instruction.replaceAll("[[a-zA-Z]+.*[a-zA-Z]+.*[a-zA-Z]+]", "").strip();
-				String[] strArr = sInstruction.split("\\s+");
+				String[] strArr = instruction
+					.replaceAll("[[a-zA-Z]+.*[a-zA-Z]+.*[a-zA-Z]+]", "")
+					.strip()
+					.split("\\s+");
 				ArrayList<Integer> intArr = new ArrayList<Integer>();
 				for (String s : strArr) {
 					if (s.length() > 0) {
