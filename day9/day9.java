@@ -17,18 +17,30 @@ class day9
 		File file = new File("input.txt");
 		Scanner scanner = new Scanner(file);
 
+		// Initialize starting points
 		headMap.add(new Point(0, 0));
 		tailMap.add(new Point(0, 0));
 		for (int i = 0; i < 8; ++i) {
 			knotsMap.add(new ArrayList<Point>());
 			knotsMap.get(i).add(new Point(0,0));
 		}
+
 		while (scanner.hasNext()) {
 			String[] input = scanner.nextLine().split(" ");
 			char direction = input[0].charAt(0);
 			int distance = Integer.valueOf(input[1]);
 			for (int i = 0; i < distance; ++i) {
 				move(direction);
+				if (PART == 1) {
+					moveTail(getLocHead());
+				}
+				else {
+					knotsMap.get(0).add(moveKnot(getLocHead(), 0));
+					for (int j = 1; j < knotsMap.size(); ++j) {
+						knotsMap.get(j).add(moveKnot(getLocKnot(j-1), j));
+					}
+					moveTail(getLocKnot(7));
+				}
 			}
 		}
 		scanner.close();
@@ -62,20 +74,6 @@ class day9
 		}
 		
 		headMap.add(new Point(headX, headY));
-		if (PART == 1) {
-			moveTail(getLocHead());
-		}
-		else {
-			for (int i = 0; i < knotsMap.size(); ++i) {
-				if (i == 0) {
-					knotsMap.get(i).add(moveKnot(getLocHead(), i));
-				}
-				else {
-					knotsMap.get(i).add(moveKnot(getLocKnot(i-1), i));
-				}
-			}
-			moveTail(getLocKnot(7));
-		}
 	}
 
 	private static Point moveKnot(Point prevKnotPosition, int n) {
@@ -86,22 +84,14 @@ class day9
 		
 		if (tailY == headY) { // same row
 			if (Math.abs(headX - tailX) > 1) {
-				if ((tailX < headX)) {
-					tailX++;
-				}
-				else if (tailX > headX) {
-					tailX--;
-				}
+				if ((tailX < headX)) tailX++;
+				else tailX--;
 			}
 		}
 		else if (tailX == headX) { // same col
 			if (Math.abs(headY - tailY) > 1) {
-				if (tailY < headY) {
-					tailY++;
-				}
-				else if (tailY > headY) {
-					tailY--;
-				}
+				if (tailY < headY) tailY++;
+				else tailY--;
 			}
 		}
 		else { // diagonally
@@ -161,22 +151,14 @@ class day9
 		
 		if (tailY == headY) { // same row
 			if (Math.abs(headX - tailX) > 1) {
-				if ((tailX < headX)) {
-					tailX++;
-				}
-				else if (tailX > headX) {
-					tailX--;
-				}
+				if (tailX < headX) tailX++;
+				else tailX--;
 			}
 		}
 		else if (tailX == headX) { // same col
 			if (Math.abs(headY - tailY) > 1) {
-				if (tailY < headY) {
-					tailY++;
-				}
-				else if (tailY > headY) {
-					tailY--;
-				}
+				if (tailY < headY) tailY++;
+				else tailY--;
 			}
 		}
 		else { // diagonally
