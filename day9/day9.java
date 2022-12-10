@@ -8,9 +8,11 @@ import java.util.Scanner;
 class day9
 {
 	private static boolean DEBUG = false;
+	private static int PART = 2;
 	private static ArrayList<Point> headMap = new ArrayList<Point>();
 	private static ArrayList<Point> tailMap = new ArrayList<Point>();
 	private static ArrayList<Point> tailVisitedOnceMap = new ArrayList<Point>();
+	private static ArrayList<ArrayList<Point>> knotsMap = new ArrayList<ArrayList<Point>>();
 	
 	public static void main(String[] args) throws FileNotFoundException {
 		File file = new File("input.txt");
@@ -18,6 +20,10 @@ class day9
 
 		headMap.add(new Point(0, 0));
 		tailMap.add(new Point(0, 0));
+		for (int i = 0; i < 8; ++i) {
+			knotsMap.add(new ArrayList<Point>());
+			knotsMap.get(i).add(new Point(0,0));
+		}
 		while (scanner.hasNext()) {
 			String[] input = scanner.nextLine().split(" ");
 			char direction = input[0].charAt(0);
@@ -60,19 +66,27 @@ class day9
 		}
 		
 		headMap.add(new Point(headX, headY));
-		moveTail(getLocHead());
+		if (PART == 1) {
+			moveTail(getLocHead());
+		}
+		else {
+			for (int i = 0; i < knotsMap.size(); ++i) {
+				if (i == 0) {
+					knotsMap.get(i).add(moveKnot(getLocHead(), i));
+				}
+				else {
+					knotsMap.get(i).add(moveKnot(getLocKnot(i-1), i));
+				}
+			}
+			moveTail(getLocKnot(7));
+		}
 	}
 
-	private static void moveTail(Point headPosition) {
-		int headX = (int)getLocHead().getX();
-		int headY = (int)getLocHead().getY();
-		int tailX = (int)getLocTail().getX();
-		int tailY = (int)getLocTail().getY();
-		
-		if (DEBUG) {
-			System.out.println("Loc head: " + getLocHead().toString());
-			System.out.println("Loc tail: " +  getLocTail().toString());
-		}
+	private static Point moveKnot(Point prevKnotPosition, int n) {
+		int headX = (int)prevKnotPosition.getX();
+		int headY = (int)prevKnotPosition.getY();
+		int tailX = (int)getLocKnot(n).getX();
+		int tailY = (int)getLocKnot(n).getY();
 		
 		if (tailY == headY) { // same row
 			if (Math.abs(headX - tailX) > 1) {
@@ -83,7 +97,6 @@ class day9
 					tailX--;
 				}
 			}
-			tailMap.add(new Point(tailX, tailY));
 		}
 		else if (tailX == headX) { // same col
 			if (Math.abs(headY - tailY) > 1) {
@@ -94,7 +107,6 @@ class day9
 					tailY--;
 				}
 			}
-			tailMap.add(new Point(tailX, tailY));
 		}
 		else { // diagonally
 			if (Math.abs(headX - tailX) > 1) {
@@ -141,8 +153,90 @@ class day9
 					}
 				}
 			}
-			tailMap.add(new Point(tailX, tailY));
 		}
+		return new Point(tailX, tailY);			
+	}
+
+	private static void moveTail(Point headPosition) {
+		int headX = (int)headPosition.getX();
+		int headY = (int)headPosition.getY();
+		int tailX = (int)getLocTail().getX();
+		int tailY = (int)getLocTail().getY();
+		
+		if (DEBUG) {
+			System.out.println("Loc head: " + headPosition.toString());
+			System.out.println("Loc tail: " +  getLocTail().toString());
+		}
+		
+		if (tailY == headY) { // same row
+			if (Math.abs(headX - tailX) > 1) {
+				if ((tailX < headX)) {
+					tailX++;
+				}
+				else if (tailX > headX) {
+					tailX--;
+				}
+			}
+			//tailMap.add(new Point(tailX, tailY));
+		}
+		else if (tailX == headX) { // same col
+			if (Math.abs(headY - tailY) > 1) {
+				if (tailY < headY) {
+					tailY++;
+				}
+				else if (tailY > headY) {
+					tailY--;
+				}
+			}
+			//tailMap.add(new Point(tailX, tailY));
+		}
+		else { // diagonally
+			if (Math.abs(headX - tailX) > 1) {
+				if (headY > tailY) {
+					if (headX > tailX) {
+						tailX++;
+						tailY++;
+					}
+					else {
+						tailX--;
+						tailY++;
+					}
+				}
+				else {
+					if (headX < tailX) {
+						tailX--;
+						tailY--;
+					}
+					else {
+						tailX++;
+						tailY--;
+					}
+				}
+			}
+			else if (Math.abs(headY - tailY) > 1) {
+				if (headX > tailX) {
+					if (headY > tailY) {
+						tailX++;
+						tailY++;
+					}
+					else {
+						tailX++;
+						tailY--;
+					}
+				}
+				else {
+					if (headY < tailY) {
+						tailX--;
+						tailY--;
+					}
+					else {
+						tailX--;
+						tailY++;
+					}
+				}
+			}
+		}
+		tailMap.add(new Point(tailX, tailY));
 	}
 
 	private static Point getLocHead() {
@@ -151,6 +245,10 @@ class day9
 
 	private static Point getLocTail() {
 		return tailMap.get(tailMap.size()-1);
+	}
+
+	private static Point getLocKnot(int n) {
+		return knotsMap.get(n).get(knotsMap.get(n).size()-1);
 	}
 
 	private static void printMap() {
