@@ -46,19 +46,20 @@ class day9
 
 		switch (direction) {
 		case 'L':
-			headMap.add(new Point(headX - 1, headY));
+			headX--;
 			break;
 		case 'R':
-			headMap.add(new Point(headX + 1, headY));
+			headX++;
 			break;
 		case 'U':
-			headMap.add(new Point(headX, headY + 1));
+			headY++;
 			break;
 		case 'D':
-			headMap.add(new Point(headX, headY - 1));
+			headY--;
 			break;
 		}
-
+		
+		headMap.add(new Point(headX, headY));
 		moveTail(getLocHead());
 	}
 
@@ -76,60 +77,71 @@ class day9
 		if (tailY == headY) { // same row
 			if (Math.abs(headX - tailX) > 1) {
 				if ((tailX < headX)) {
-					tailMap.add(new Point(tailX + 1, tailY));
+					tailX++;
 				}
 				else if (tailX > headX) {
-					tailMap.add(new Point(tailX - 1, tailY));
+					tailX--;
 				}
 			}
+			tailMap.add(new Point(tailX, tailY));
 		}
 		else if (tailX == headX) { // same col
 			if (Math.abs(headY - tailY) > 1) {
 				if (tailY < headY) {
-					tailMap.add(new Point(tailX, tailY + 1));
+					tailY++;
 				}
 				else if (tailY > headY) {
-					tailMap.add(new Point(tailX, tailY - 1));
+					tailY--;
 				}
 			}
+			tailMap.add(new Point(tailX, tailY));
 		}
 		else { // diagonally
 			if (Math.abs(headX - tailX) > 1) {
 				if (headY > tailY) {
 					if (headX > tailX) {
-						tailMap.add(new Point(tailX + 1, tailY + 1));
+						tailX++;
+						tailY++;
 					}
 					else {
-						tailMap.add(new Point(tailX - 1, tailY + 1));
+						tailX--;
+						tailY++;
 					}
 				}
 				else {
 					if (headX < tailX) {
-						tailMap.add(new Point(tailX - 1, tailY - 1));
+						tailX--;
+						tailY--;
 					}
 					else {
-						tailMap.add(new Point(tailX + 1, tailY - 1));
+						tailX++;
+						tailY--;
 					}
 				}
 			}
 			else if (Math.abs(headY - tailY) > 1) {
 				if (headX > tailX) {
 					if (headY > tailY) {
-						tailMap.add(new Point(tailX + 1, tailY + 1));
+						tailX++;
+						tailY++;
 					}
 					else {
-						tailMap.add(new Point(tailX + 1, tailY - 1));
+						tailX++;
+						tailY--;
 					}
 				}
 				else {
 					if (headY < tailY) {
-						tailMap.add(new Point(tailX - 1, tailY - 1));
+						tailX--;
+						tailY--;
 					}
 					else {
-						tailMap.add(new Point(tailX - 1, tailY + 1));
+						tailX--;
+						tailY++;
 					}
 				}
 			}
+			tailMap.add(new Point(tailX, tailY));
 		}
 	}
 
