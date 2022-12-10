@@ -60,16 +60,12 @@ class day10
 	}
 
 	static void drawScreen(int cycle) {
-		int[] sprite = new int[3];
-		int iTranspose = x;
-		int row = 0;
-		int column = 0;
 		cycle = cycle - 1;
+		int[] sprite = new int[3];
+		int row = 0;
+		int column = cycle;
 		
-		if (cycle >= 0 && cycle < 40) {
-			column = cycle;
-		}
-		else if (cycle >= 40 && cycle < 80) {
+		if (cycle >= 40 && cycle < 80) {
 			row = 1;
 			column = cycle - 40;
 		}
