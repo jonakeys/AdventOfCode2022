@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 class day10
@@ -13,12 +14,10 @@ class day10
 		Scanner scanner = new Scanner(file);
 		int cycle = 1;
 
-		for (int i = 0; i < 6; ++i) {
-			for (int j = 0; j < 40; ++j) {
-				crtScreen[i][j] = '.';
-			}
+		for (char[] row : crtScreen) {
+			Arrays.fill(row, '.');
 		}
-			
+		
 		while (scanner.hasNext()) {
 			String[] instruction = scanner.nextLine().split(" ");
 			switch (instruction[0]) {
