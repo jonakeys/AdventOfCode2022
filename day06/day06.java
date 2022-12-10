@@ -2,14 +2,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-class day6
+class day06
 {
 	public static void main(String[] args) {
 		File file = new File("input.txt");
 		try {
 			Scanner scanner = new Scanner(file);
 			int afterChar = 0;
-			int nDistinctChars = 14;
+			int nDistinctChars = 14; // part 1 = 4
 			String serie = "";
  
 			while (scanner.hasNextLine()) {

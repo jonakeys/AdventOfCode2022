@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.util.HashSet;
 import java.util.Set;
 
-class day4 {
+class day04 {
 	public static void main(String[] args) {
 		try {
 			File file = new File("input.txt");

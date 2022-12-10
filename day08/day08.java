@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-class day8
+class day08
 {
 	private static ArrayList<ArrayList<Integer>> map =
 		new ArrayList<ArrayList<Integer>>();

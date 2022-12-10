@@ -5,7 +5,7 @@ import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-class day9
+class day09
 {
 	private static int PART = 2;
 	private static ArrayList<Point> headMap = new ArrayList<Point>();
