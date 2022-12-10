@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 class day9
 {
-	private static boolean DEBUG = false;
 	private static int PART = 2;
 	private static ArrayList<Point> headMap = new ArrayList<Point>();
 	private static ArrayList<Point> tailMap = new ArrayList<Point>();
@@ -28,11 +27,8 @@ class day9
 			String[] input = scanner.nextLine().split(" ");
 			char direction = input[0].charAt(0);
 			int distance = Integer.valueOf(input[1]);
-			if (DEBUG) System.out.println(direction + "\t" + distance);
 			for (int i = 0; i < distance; ++i) {
-				if (DEBUG) System.out.println(direction);
 				move(direction);
-				//printProgressMap();
 			}
 		}
 		scanner.close();
@@ -163,11 +159,6 @@ class day9
 		int tailX = (int)getLocTail().getX();
 		int tailY = (int)getLocTail().getY();
 		
-		if (DEBUG) {
-			System.out.println("Loc head: " + headPosition.toString());
-			System.out.println("Loc tail: " +  getLocTail().toString());
-		}
-		
 		if (tailY == headY) { // same row
 			if (Math.abs(headX - tailX) > 1) {
 				if ((tailX < headX)) {
@@ -177,7 +168,6 @@ class day9
 					tailX--;
 				}
 			}
-			//tailMap.add(new Point(tailX, tailY));
 		}
 		else if (tailX == headX) { // same col
 			if (Math.abs(headY - tailY) > 1) {
@@ -188,7 +178,6 @@ class day9
 					tailY--;
 				}
 			}
-			//tailMap.add(new Point(tailX, tailY));
 		}
 		else { // diagonally
 			if (Math.abs(headX - tailX) > 1) {
@@ -273,13 +262,6 @@ class day9
 		int offsetX = (minX < 0) ? Math.abs(minX) : 0;
 		int offsetY = (minY < 0) ? Math.abs(minY) : 0;
 
-		if (DEBUG) {
-			System.out.println("\nX (" + minX + " - " + maxX + ")  Y ("
-							   + minY + " - " + maxY + ")");
-
-			System.out.println(width + " " + height);
-		}
-
 		for (int y = 0; y < height; ++y) {
 			for (int x = 0; x < width; ++x) {
 				charMap[x][y] = '.';
@@ -298,49 +280,5 @@ class day9
 			}
 			System.out.println();
 		}
-	}
-
-	private static void printProgressMap() {
-		int minX = 0;
-		int minY = 0;
-		int maxX = 0;
-		int maxY = 0;
-		
-		for (Point p : headMap) {
-			int x = (int)p.getX();
-			int y = (int)p.getY();
-			minX = (x < minX) ? x : minX;
-			maxX = (x > maxX) ? x : maxX;
-			minY = (y < minY) ? y : minY;
-			maxY = (y > maxY) ? y : maxY;
-		}
-		
-		int width = (maxX - minX) + 1;
-		int height = (maxY - minY) + 1;
-
-		char[][] charMap = new char[width][height];
-		int offsetX = (minX < 0) ? Math.abs(minX) : 0;
-		int offsetY = (minY < 0) ? Math.abs(minY) : 0;
-
-		for (int y = 0; y < height; ++y) {
-			for (int x = 0; x < width; ++x) {
-				charMap[x][y] = '.';
-			}
-		}
-
-		int headX = (int)getLocHead().getX();
-		int headY = (int)getLocHead().getY();
-		int tailX = (int)getLocTail().getX();
-		int tailY = (int)getLocTail().getY();
-		charMap[tailX+offsetX][tailY+offsetY] = 'T';
-		charMap[headX+offsetX][headY+offsetY] = 'H';		
-
-		for (int y = height-1; y >= 0; --y) {
-			for (int x = 0; x < width; ++x) {
-				System.out.print(charMap[x][y]);
-			}
-			System.out.println();
-		}
-		System.out.println();
 	}
 }
