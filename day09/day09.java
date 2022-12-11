@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 class day09
 {
-	private static int PART = 2;
+	private static int PART = 1;
 	private static ArrayList<Point> headMap = new ArrayList<Point>();
 	private static ArrayList<Point> tailMap = new ArrayList<Point>();
 	private static ArrayList<Point> tailVisitedOnceMap = new ArrayList<Point>();
@@ -32,14 +32,14 @@ class day09
 			for (int i = 0; i < distance; ++i) {
 				move(direction);
 				if (PART == 1) {
-					moveTail(getLocHead());
+					tailMap.add(moveKnot(getLocHead(), getLocTail()));
 				}
 				else {
-					knotsMap.get(0).add(moveKnot(getLocHead(), 0));
+					knotsMap.get(0).add(moveKnot(getLocHead(), getLocKnot(0)));
 					for (int j = 1; j < knotsMap.size(); ++j) {
-						knotsMap.get(j).add(moveKnot(getLocKnot(j-1), j));
+						knotsMap.get(j).add(moveKnot(getLocKnot(j-1), getLocKnot(j)));
 					}
-					moveTail(getLocKnot(7));
+					tailMap.add(moveKnot(getLocKnot(knotsMap.size()-1), getLocTail()));
 				}
 			}
 		}
@@ -76,11 +76,11 @@ class day09
 		headMap.add(new Point(headX, headY));
 	}
 
-	private static Point moveKnot(Point prevKnotPosition, int n) {
+	private static Point moveKnot(Point prevKnotPosition, Point knotPosition) {
 		int headX = (int)prevKnotPosition.getX();
 		int headY = (int)prevKnotPosition.getY();
-		int tailX = (int)getLocKnot(n).getX();
-		int tailY = (int)getLocKnot(n).getY();
+		int tailX = (int)knotPosition.getX();
+		int tailY = (int)knotPosition.getY();
 		
 		if (tailY == headY) { // same row
 			if (Math.abs(headX - tailX) > 1) {
@@ -97,117 +97,30 @@ class day09
 		else { // diagonally
 			if (Math.abs(headX - tailX) > 1) {
 				if (headY > tailY) {
-					if (headX > tailX) {
-						tailX++;
-						tailY++;
-					}
-					else {
-						tailX--;
-						tailY++;
-					}
+					tailY++;
+					if (headX > tailX) tailX++;
+					else tailX--;
 				}
 				else {
-					if (headX < tailX) {
-						tailX--;
-						tailY--;
-					}
-					else {
-						tailX++;
-						tailY--;
-					}
+					tailY--;
+					if (headX < tailX) tailX--;
+					else tailX++;
 				}
 			}
 			else if (Math.abs(headY - tailY) > 1) {
 				if (headX > tailX) {
-					if (headY > tailY) {
-						tailX++;
-						tailY++;
-					}
-					else {
-						tailX++;
-						tailY--;
-					}
+					tailX++;
+					if (headY > tailY) tailY++;
+					else tailY--;
 				}
 				else {
-					if (headY < tailY) {
-						tailX--;
-						tailY--;
-					}
-					else {
-						tailX--;
-						tailY++;
-					}
+					tailX--;
+					if (headY < tailY) tailY--;
+					else tailY++;
 				}
 			}
 		}
 		return new Point(tailX, tailY);			
-	}
-
-	private static void moveTail(Point headPosition) {
-		int headX = (int)headPosition.getX();
-		int headY = (int)headPosition.getY();
-		int tailX = (int)getLocTail().getX();
-		int tailY = (int)getLocTail().getY();
-		
-		if (tailY == headY) { // same row
-			if (Math.abs(headX - tailX) > 1) {
-				if (tailX < headX) tailX++;
-				else tailX--;
-			}
-		}
-		else if (tailX == headX) { // same col
-			if (Math.abs(headY - tailY) > 1) {
-				if (tailY < headY) tailY++;
-				else tailY--;
-			}
-		}
-		else { // diagonally
-			if (Math.abs(headX - tailX) > 1) {
-				if (headY > tailY) {
-					if (headX > tailX) {
-						tailX++;
-						tailY++;
-					}
-					else {
-						tailX--;
-						tailY++;
-					}
-				}
-				else {
-					if (headX < tailX) {
-						tailX--;
-						tailY--;
-					}
-					else {
-						tailX++;
-						tailY--;
-					}
-				}
-			}
-			else if (Math.abs(headY - tailY) > 1) {
-				if (headX > tailX) {
-					if (headY > tailY) {
-						tailX++;
-						tailY++;
-					}
-					else {
-						tailX++;
-						tailY--;
-					}
-				}
-				else {
-					if (headY < tailY) {
-						tailX--;
-						tailY--;
-					}
-					else {
-						tailX--;
-						tailY++;
-					}
-				}
-			}
-		}
-		tailMap.add(new Point(tailX, tailY));
 	}
 
 	private static Point getLocHead() {
