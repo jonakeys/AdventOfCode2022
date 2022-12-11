@@ -91,20 +91,6 @@ class Monkey
  	public long operation(long worryLvl) {
 		inspected++;
 		long nOperand = this.operand;
-		if (this.operand == -1) {
-			nOperand = worryLvl;
-		}
-		if (operation == '+') {
-			return (worryLvl % SUPERMOD) + (nOperand % SUPERMOD);
-		}
-		else {
-			return ((worryLvl % SUPERMOD) * (worryLvl % SUPERMOD));
-		}
-	}
-
-	public long operation2(long worryLvl) {
-		inspected++;
-		long nOperand = this.operand;
 		
 		if (this.operand == -1) {
 			nOperand = worryLvl;
@@ -113,7 +99,7 @@ class Monkey
 		BigInteger supermod = BigInteger.valueOf(SUPERMOD);
 		BigInteger a = BigInteger.valueOf(worryLvl).remainder(supermod);
 		BigInteger b = BigInteger.valueOf(nOperand).remainder(supermod);
-	    
+		
 		if (operation == '+') {
 			return a.add(b).longValue();
 		}
@@ -132,12 +118,5 @@ class Monkey
 		System.out.println("Div by: " + divisibleBy);
 		System.out.println("True: " + ifTrue + " False: " + ifFalse);
 		System.out.println();
-	}
-
-	public void printItems() {
-		for (Item i : items) {
-			System.out.print(i.getWorryLvl() + " ");
-		}
-		System.out.println();			
 	}
 }

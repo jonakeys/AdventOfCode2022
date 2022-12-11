@@ -50,7 +50,7 @@ class Day11
 						throwItems.add(m.updateItem(i, m.operation(i.getWorryLvl())));
 					}
 					else {
-						throwItems.add(m.updateItem2(i, m.operation2(i.getWorryLvl())));
+						throwItems.add(m.updateItem2(i, m.operation(i.getWorryLvl())));
 					}
 				}
 				m.updateItems(throwItems);
@@ -61,7 +61,6 @@ class Day11
 			}
 		}
 
-		// Part 1
 		long maxIns1 = 0;
 		long maxIns2 = 0;
 		for (Monkey m : monkeys) {
@@ -74,7 +73,5 @@ class Day11
 			}
 		}
 		System.out.println("Monkey business: " + (maxIns1 * maxIns2));
-		System.out.println("Monkey business2: " + maxIns1 + " " + maxIns2);
-
 	}
 }
