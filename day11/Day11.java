@@ -10,6 +10,7 @@ class Day11
 		File file = new File("day11/input.txt");
 		Scanner scanner = new Scanner(file);
 		ArrayList<Monkey> monkeys = new ArrayList<Monkey>();
+		long PART = 2;
 
 		while (scanner.hasNextLine()) {
 			// Read all monkey info
@@ -25,7 +26,7 @@ class Day11
 			char cOperation = sOperation[sOperation.length-2].charAt(0);
 			String sOperand = sOperation[sOperation.length-1];
 			String[] sTest = scanner.nextLine().split(" ");
-			int nTest = Integer.valueOf(sTest[sTest.length-1]);
+			long nTest = Long.valueOf(sTest[sTest.length-1]);
 			String[] sTrue = scanner.nextLine().split(" ");
 			String[] sFalse = scanner.nextLine().split(" ");
 			int nTrue = Integer.valueOf(sTrue[sTrue.length-1]);
@@ -40,12 +41,17 @@ class Day11
 		}
 		scanner.close();
 
-		for (int j = 0; j < 20; ++j) {
+		for (int j = 0; j < 10000; ++j) {
 			for (Monkey m : monkeys) {
 				ArrayList<Item> items = m.getItems();
 				ArrayList<Item> throwItems = new ArrayList<Item>();
 				for (Item i : items) {
-					throwItems.add(m.updateItem(i, m.operation(i.getWorryLvl())));
+					if (PART == 1) {
+						throwItems.add(m.updateItem(i, m.operation(i.getWorryLvl())));
+					}
+					else {
+						throwItems.add(m.updateItem2(i, m.operation2(i.getWorryLvl())));
+					}
 				}
 				m.updateItems(throwItems);
 				for (Item i : throwItems) {
@@ -55,8 +61,9 @@ class Day11
 			}
 		}
 
-		int maxIns1 = 0;
-		int maxIns2 = 0;
+		// Part 1
+		long maxIns1 = 0;
+		long maxIns2 = 0;
 		for (Monkey m : monkeys) {
 			if (m.getInspected() > maxIns1) {
 				maxIns2 = maxIns1;
@@ -67,5 +74,7 @@ class Day11
 			}
 		}
 		System.out.println("Monkey business: " + (maxIns1 * maxIns2));
+		System.out.println("Monkey business2: " + maxIns1 + " " + maxIns2);
+
 	}
 }

@@ -2,17 +2,17 @@ package day11;
 
 class Item
 {
-	private int worryLevel;
+	private long worryLevel;
 
-	public Item(int worryLvl) {
+	public Item(long worryLvl) {
 		this.worryLevel = worryLvl;
 	}
 
-	public int getWorryLvl() {
+	public long getWorryLvl() {
 		return worryLevel;
 	}
 
-	public void setWorryLvl(int newWorryLvl) {
+	public void setWorryLvl(long newWorryLvl) {
 		this.worryLevel = newWorryLvl;
 	}
 }

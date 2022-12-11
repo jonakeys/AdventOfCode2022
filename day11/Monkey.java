@@ -1,17 +1,20 @@
 package day11;
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 class Monkey
 {
+	private final long SUPERMOD = 9699690; // input
+	//private final long SUPERMOD = 96577; // test
 	private ArrayList<Item> items;
 	private char operation;
-	private int operand;
-	private int divisibleBy;
+	private long operand;
+	private long divisibleBy;
 	private int ifTrue;
 	private int ifFalse;
-	private int inspected;
+	private long inspected;
 
-	public Monkey(char op, String sOp, int div, int ifT, int ifF) {
+	public Monkey(char op, String sOp, long div, int ifT, int ifF) {
 		this.items = new ArrayList<Item>();
 		this.operation = op;
 		if (sOp.equals("old")) {
@@ -37,7 +40,7 @@ class Monkey
 		return items;
 	}
 
-	public int getInspected() {
+	public long getInspected() {
 		return inspected;
 	}
 
@@ -45,7 +48,7 @@ class Monkey
 		items.add(i);
 	}
 
-	public Item updateItem(Item i, int newWorryLvl) {
+	public Item updateItem(Item i, long newWorryLvl) {
 		for (int j = 0; j < items.size(); ++j) {
 			if (i.getWorryLvl() == items.get(j).getWorryLvl()) {
 				return new Item(newWorryLvl / 3);
@@ -53,7 +56,17 @@ class Monkey
 		}
 		return new Item(0);
 	}
-	
+
+	public Item updateItem2(Item i, long newWorryLvl) {
+		for (int j = 0; j < items.size(); ++j) {
+			if (i.getWorryLvl() == items.get(j).getWorryLvl()) {
+				long ans = newWorryLvl % SUPERMOD;
+				return new Item(ans);
+			}
+		}
+		return new Item(0);
+	}
+
 	public void updateItems(ArrayList<Item> newItems) {
 		items.clear();
 		for (Item i : newItems) {
@@ -71,21 +84,41 @@ class Monkey
 		}
 	}
 
-	public boolean test(int worryLvl) {
+	public boolean test(long worryLvl) {
 		return ((worryLvl % divisibleBy) == 0);
 	}
 
-	public int operation(int worryLvl) {
+ 	public long operation(long worryLvl) {
 		inspected++;
-		int nOperand = this.operand;
+		long nOperand = this.operand;
 		if (this.operand == -1) {
 			nOperand = worryLvl;
 		}
 		if (operation == '+') {
-			return worryLvl + nOperand;
+			return (worryLvl % SUPERMOD) + (nOperand % SUPERMOD);
 		}
 		else {
-			return worryLvl * nOperand;
+			return ((worryLvl % SUPERMOD) * (worryLvl % SUPERMOD));
+		}
+	}
+
+	public long operation2(long worryLvl) {
+		inspected++;
+		long nOperand = this.operand;
+		
+		if (this.operand == -1) {
+			nOperand = worryLvl;
+		}
+
+		BigInteger supermod = BigInteger.valueOf(SUPERMOD);
+		BigInteger a = BigInteger.valueOf(worryLvl).remainder(supermod);
+		BigInteger b = BigInteger.valueOf(nOperand).remainder(supermod);
+	    
+		if (operation == '+') {
+			return a.add(b).longValue();
+		}
+		else {
+			return a.multiply(b).longValue();
 		}
 	}
 
