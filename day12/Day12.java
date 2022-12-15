@@ -44,14 +44,19 @@ class Day12
 		}
 		scanner.close();
 
-		/*
+		ArrayList<Integer> shortestPath = new ArrayList<Integer>();
 		nodes.forEach(
-		  (key, value)
-		  -> System.out.println(key + " = " + value));
-		*/
-		//System.out.println(startNode.toString() + " " + endNode.toString());
+					  (key, value)
+					  -> {
+						  if (value == 97) {
+							  int pathLength = pathfind(key, endNode);
+							  shortestPath.add(pathLength);
+						  }
+					  });
+		Collections.sort(shortestPath);
 
-        System.out.println(Integer.toString(pathfind(startNode, endNode)));
+        System.out.println("Shortest path: " + Integer.toString(pathfind(startNode, endNode)));
+		System.out.println("Shortest path from any 'a': " + shortestPath.get(0));
     }
 
 	public static int pathfind(Node startNode, Node endNode) {
@@ -74,8 +79,9 @@ class Day12
                 return path.size();
             }
 			
-            for(Node c : current.directNeighbors()) {
-                if (!nodes.containsKey(c) || (nodes.get(c) > nodes.get(current) + 1)) {
+            for(Node c : current.nextTo()) {
+                if (!nodes.containsKey(c)
+					|| (nodes.get(c) > nodes.get(current) + 1)) {
                     continue;
 				}
 
@@ -116,7 +122,7 @@ class Day12
 			return "(" + x + ", " + y + ")";
 		}
 
-		public ArrayList<Node> directNeighbors() {
+		public ArrayList<Node> nextTo() {
 			ArrayList<Node> list = new ArrayList<Node>();
 			for (int yOff = -1; yOff < 2; yOff++) {
 				for (int xOff = -1; xOff < 2; xOff++) {
