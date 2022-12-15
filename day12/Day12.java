@@ -45,21 +45,20 @@ class Day12
 		scanner.close();
 
 		ArrayList<Integer> shortestPath = new ArrayList<Integer>();
-		nodes.forEach(
-					  (key, value)
+		nodes.forEach((key, value)
 					  -> {
 						  if (value == 97) {
-							  int pathLength = pathfind(key, endNode);
+							  int pathLength = searchPath(key, endNode);
 							  shortestPath.add(pathLength);
 						  }
 					  });
 		Collections.sort(shortestPath);
 
-        System.out.println("Shortest path: " + Integer.toString(pathfind(startNode, endNode)));
+        System.out.println("Shortest path: " + Integer.toString(searchPath(startNode, endNode)));
 		System.out.println("Shortest path from any 'a': " + shortestPath.get(0));
     }
 
-	public static int pathfind(Node startNode, Node endNode) {
+	public static int searchPath(Node startNode, Node endNode) {
         HashMap<Node, Integer> gCost = new HashMap<Node, Integer>();
         HashMap<Node, Node> parent = new HashMap<Node, Node>();
         LinkedList<Node> queue = new LinkedList<>();
